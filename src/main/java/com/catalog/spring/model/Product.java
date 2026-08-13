@@ -47,11 +47,7 @@ public class Product {
     private Instant deletedAt;
 
     @ManyToMany
-    @JoinTable(
-        name = "product_categories",
-        joinColumns = @JoinColumn(name = "product_id"),
-        inverseJoinColumns = @JoinColumn(name = "category_id")
-    )
+    @JoinTable(name = "product_categories", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
     @Setter
     private Set<Category> categories = new HashSet<>();
 
@@ -69,5 +65,12 @@ public class Product {
 
     public void restore() {
         this.deletedAt = null;
+    }
+
+    public Product(String title, String description, BigDecimal price, Account publishedBy) {
+        this.title = title;
+        this.description = description;
+        this.price = price;
+        this.publishedBy = publishedBy;
     }
 }
