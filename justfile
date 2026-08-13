@@ -4,3 +4,6 @@ default:
 
 start:
     ./mvnw spring-boot:run
+
+sync-deps: 
+    ./mvnw dependency:resolve

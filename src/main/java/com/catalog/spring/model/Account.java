@@ -1,16 +1,24 @@
 package com.catalog.spring.model;
 
-import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.annotations.SQLRestriction;
-
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+
+import org.hibernate.annotations.SQLRestriction;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "accounts")
@@ -56,5 +64,11 @@ public class Account {
 
     public void restore() {
         this.deletedAt = null;
+    }
+
+    public Account(String email, String username, String passwordHash) {
+        this.email = email;
+        this.username = username;
+        this.passwordHash = passwordHash;
     }
 }
