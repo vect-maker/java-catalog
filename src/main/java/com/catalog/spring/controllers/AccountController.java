@@ -1,7 +1,6 @@
 package com.catalog.spring.controllers;
 
 import com.catalog.spring.dto.AccountUpdateRequest;
-import com.catalog.spring.dto.AuthResponse;
 import com.catalog.spring.dto.LoginRequest;
 import com.catalog.spring.dto.RegisterRequest;
 import com.catalog.spring.model.Account;
@@ -35,7 +34,7 @@ public class AccountController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<String> login(@RequestBody LoginRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.email(), request.password()));
 
@@ -44,7 +43,7 @@ public class AccountController {
 
         String token = jwtService.generateToken(account.getEmail(), account.getId());
 
-        return ResponseEntity.ok(new AuthResponse(token, "Bearer"));
+        return ResponseEntity.ok(token);
     }
 
     @PostMapping("/register")

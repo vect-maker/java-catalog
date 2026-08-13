@@ -18,26 +18,11 @@ public class CategorySeeder implements CommandLineRunner {
     public void run(String... args) {
         if (categoryRepository.count() > 0) return;
 
-        Category electronics = new Category("Electronics", "Gadgets and devices");
-        Category clothing = new Category("Clothing", "Apparel and accessories");
-        Category home = new Category("Home & Garden", "Furniture, decor, and gardening");
-
-        categoryRepository.save(electronics);
-        categoryRepository.save(clothing);
-        categoryRepository.save(home);
-
-        // Sub-categories
-        Category phones = new Category("Phones", "Smartphones and accessories");
-        phones.setParent(electronics);
-
-        Category laptops = new Category("Laptops", "Notebooks and workstations");
-        laptops.setParent(electronics);
-
-        Category shirts = new Category("Shirts", "T-shirts, polos, and dress shirts");
-        shirts.setParent(clothing);
-
-        categoryRepository.save(phones);
-        categoryRepository.save(laptops);
-        categoryRepository.save(shirts);
+        categoryRepository.save(new Category("Electronics", "Gadgets and devices"));
+        categoryRepository.save(new Category("Clothing", "Apparel and accessories"));
+        categoryRepository.save(new Category("Home & Garden", "Furniture, decor, and gardening"));
+        categoryRepository.save(new Category("Phones", "Smartphones and accessories"));
+        categoryRepository.save(new Category("Laptops", "Notebooks and workstations"));
+        categoryRepository.save(new Category("Shirts", "T-shirts, polos, and dress shirts"));
     }
 }

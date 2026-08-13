@@ -7,15 +7,14 @@ import java.util.UUID;
 
 import org.hibernate.annotations.SQLRestriction;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -34,14 +33,6 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name = "parent_id")
-    @Setter
-    private Category parent;
-
-    @OneToMany(mappedBy = "parent")
-    private Set<Category> children = new HashSet<>();
-
     @Column(nullable = false, unique = true, length = 255)
     @Setter
     private String name;
@@ -57,6 +48,7 @@ public class Category {
     private Instant deletedAt;
 
     @ManyToMany(mappedBy = "categories")
+    @JsonIgnore
     private Set<Product> products = new HashSet<>();
 
     @PrePersist

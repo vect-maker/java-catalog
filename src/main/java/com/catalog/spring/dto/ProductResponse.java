@@ -13,6 +13,6 @@ public record ProductResponse(
     Instant createdAt,
     UUID publishedById,
     String publishedByUsername,
-    Set<String> categories,
+    Set<UUID> categoryIds,
     long likeCount
 ) {}

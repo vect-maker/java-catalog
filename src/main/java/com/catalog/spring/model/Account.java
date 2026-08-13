@@ -68,10 +68,8 @@ public class Account {
 
     public void softDelete() {
         this.deletedAt = Instant.now();
-    }
-
-    public void restore() {
-        this.deletedAt = null;
+        this.email = "deleted-" + this.id + "@deleted.local";
+        this.username = "deleted-" + this.id;
     }
 
     public Account(String email, String username, String passwordHash) {

@@ -37,13 +37,6 @@ public class CategoryController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Category> create(@RequestBody CategoryRequest request) {
         Category category = new Category(request.name(), request.description());
-
-        if (request.parentId() != null) {
-            Category parent = categoryRepository.findById(request.parentId())
-                    .orElseThrow(() -> new RuntimeException("Parent category not found"));
-            category.setParent(parent);
-        }
-
         Category saved = categoryRepository.save(category);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
@@ -59,11 +52,6 @@ public class CategoryController {
         }
         if (request.description() != null) {
             category.setDescription(request.description());
-        }
-        if (request.parentId() != null) {
-            Category parent = categoryRepository.findById(request.parentId())
-                    .orElseThrow(() -> new RuntimeException("Parent category not found"));
-            category.setParent(parent);
         }
 
         Category updated = categoryRepository.save(category);

@@ -1,5 +1,25 @@
 package com.catalog.spring.controllers;
 
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.catalog.spring.dto.LikeResponse;
 import com.catalog.spring.dto.ProductRequest;
 import com.catalog.spring.dto.ProductResponse;
@@ -12,17 +32,6 @@ import com.catalog.spring.repositories.AccountRepository;
 import com.catalog.spring.repositories.CategoryRepository;
 import com.catalog.spring.repositories.ProductLikeRepository;
 import com.catalog.spring.repositories.ProductRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @RestController
 @RequestMapping("/products")
@@ -43,7 +52,7 @@ public class ProductController {
         this.productLikeRepository = productLikeRepository;
     }
 
-    // --- CRUD ---
+    // CRUD
 
     @PostMapping
     public ResponseEntity<ProductResponse> create(@RequestBody ProductRequest request) {
@@ -181,7 +190,10 @@ public class ProductController {
                 product.getCreatedAt(),
                 product.getPublishedBy().getId(),
                 product.getPublishedBy().getUsername(),
-                product.getCategories().stream().map(Category::getName).collect(Collectors.toSet()),
+                product.getCategories().stream()
+                        .filter(Objects::nonNull)
+                        .map(category -> category.getId())
+                        .collect(Collectors.toSet()),
                 productLikeRepository.countByProduct(product));
     }
 }
