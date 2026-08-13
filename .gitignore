@@ -1,4 +1,5 @@
 *.db
+**/repomix-output.xml
 
 HELP.md
 target/

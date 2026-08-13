@@ -1,0 +1,60 @@
+package com.catalog.spring.model;
+
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.SQLRestriction;
+
+import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
+@Entity
+@Table(name = "accounts")
+@SQLRestriction("deleted_at IS NULL")
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Account {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
+    @Column(nullable = false, unique = true, length = 255)
+    private String email;
+
+    @Column(name = "password_hash", nullable = false, length = 255)
+    @Setter
+    private String passwordHash;
+
+    @Column(nullable = false, unique = true, length = 50)
+    private String username;
+
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private Instant createdAt;
+
+    @Column(name = "deleted_at")
+    private Instant deletedAt;
+
+    @OneToMany(mappedBy = "publishedBy")
+    private Set<Product> products = new HashSet<>();
+
+    @OneToMany(mappedBy = "account")
+    private Set<ProductLike> likes = new HashSet<>();
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = Instant.now();
+    }
+
+    public void softDelete() {
+        this.deletedAt = Instant.now();
+    }
+
+    public void restore() {
+        this.deletedAt = null;
+    }
+}
