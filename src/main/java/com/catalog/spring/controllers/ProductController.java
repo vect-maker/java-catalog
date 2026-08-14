@@ -129,7 +129,7 @@ public class ProductController {
         Account account = currentAccount();
 
         if (productLikeRepository.existsByAccountAndProduct(account, product)) {
-            return ResponseEntity.badRequest().build(); // already liked
+            return ResponseEntity.badRequest().build(); 
         }
 
         productLikeRepository.save(new ProductLike(account, product));
